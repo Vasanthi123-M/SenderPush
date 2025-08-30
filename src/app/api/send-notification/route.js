@@ -63,7 +63,7 @@ export async function POST(req) {
       return withCors(req, NextResponse.json({ success: false, error: "No tokens" }, { status: 400 }));
 
     const message = {
-      data: { title, body: text, url: process.env.RECEIVER_URL + "/Home" },
+      data: { title, body: text, url: process.env.ALLOWED_ORIGINS + "/Home" },
       tokens: targetTokens,
     };
 

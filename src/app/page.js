@@ -12,7 +12,7 @@ export default function SenderPage() {
 
   async function loadUsers() {
     try {
-      const res = await fetch("/api/get-users");
+      const res = await fetch("http://192.168.1.5:3000/api/get-users");
       const data = await res.json();
       if (data.success) setUsers(data.users || []);
     } catch (e) {
@@ -44,7 +44,7 @@ export default function SenderPage() {
       for (const user of usersToSend) {
         const personalizedBody = `Hello ${user.name}, ${body}`;
 
-        const res = await fetch("/api/send-notification", {
+        const res = await fetch("http://192.168.1.5:3000/api/send-notification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
