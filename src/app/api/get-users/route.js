@@ -27,7 +27,6 @@
 //     return withCors(NextResponse.json({ success: false, error: e.message }, { status: 500 }));
 //   }
 // }
-
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
@@ -44,9 +43,10 @@ export async function GET(req) {
       .select({ name: 1, email: 1, token: 1 })
       .sort({ updatedAt: -1 })
       .lean();
-
     return withCors(req, NextResponse.json({ success: true, users }));
-  } catch (e) {
-    return withCors(req, NextResponse.json({ success: false, error: e.message }, { status: 500 }));
+  } catch (err) {
+    return withCors(req, NextResponse.json({ success: false, error: err.message }, { status: 500 }));
   }
 }
+
+

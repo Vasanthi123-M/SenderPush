@@ -39,6 +39,8 @@
 //   }
 // }
 
+
+// example: /api/save-token/route.js
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
@@ -54,10 +56,7 @@ export async function POST(req) {
     const { name, email, token } = await req.json();
 
     if (!name || !token) {
-      return withCors(
-        req,
-        NextResponse.json({ success: false, error: "name and token required" }, { status: 400 })
-      );
+      return withCors(req, NextResponse.json({ success: false, error: "name and token required" }, { status: 400 }));
     }
 
     const filter = email ? { email } : { token };
@@ -71,9 +70,6 @@ export async function POST(req) {
 
     return withCors(req, NextResponse.json({ success: true, user: doc }));
   } catch (err) {
-    return withCors(
-      req,
-      NextResponse.json({ success: false, error: err.message }, { status: 500 })
-    );
+    return withCors(req, NextResponse.json({ success: false, error: err.message }, { status: 500 }));
   }
 }

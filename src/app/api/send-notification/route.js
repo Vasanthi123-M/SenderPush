@@ -63,7 +63,7 @@ export async function POST(req) {
       return withCors(req, NextResponse.json({ success: false, error: "No tokens" }, { status: 400 }));
 
     const message = {
-      data: { title, body: text, url: "http://localhost:3001/Home" },
+      data: { title, body: text, url: process.env.RECEIVER_URL + "/Home" },
       tokens: targetTokens,
     };
 
