@@ -12,7 +12,7 @@ export default function SenderPage() {
 
   async function loadUsers() {
     try {
-      const res = await fetch("/api/get-users");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-users`);
       const data = await res.json();
       if (data.success) setUsers(data.users || []);
     } catch (e) {
@@ -44,7 +44,7 @@ export default function SenderPage() {
       for (const user of usersToSend) {
         const personalizedBody = `Hello ${user.name}, ${body}`;
 
-        const res = await fetch("/api/send-notification", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/send-notification`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -61,7 +61,7 @@ export default function SenderPage() {
     if (mode === "broadcast") {
   for (const user of users) {
     const personalizedBody = `Hello ${user.name}, ${body}`;
-    await fetch("/api/send-notification", {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/send-notification`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, body: personalizedBody, tokens: [user.token] }),
