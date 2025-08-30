@@ -27,23 +27,38 @@
 //   return withCors(req, NextResponse.json({}, { status: 200 }));
 // }
 
+
+// lib/cors.js
 import { NextResponse } from "next/server";
 
+// Allowed origins (set in Vercel environment variables)
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
 
 export function withCors(req, res) {
   const origin = req.headers.get("origin");
+  
   if (origin && allowedOrigins.includes(origin)) {
     res.headers.set("Access-Control-Allow-Origin", origin);
   } else {
-    res.headers.set("Access-Control-Allow-Origin", "null");
+    // fallback: can also allow all (*) but credentials won't work
+    res.headers.set("Access-Control-Allow-Origin", allowedOrigins[0] || "*");
   }
-  res.headers.set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  res.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,DELETE,OPTIONS"
+  );
+  res.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
   res.headers.set("Access-Control-Allow-Credentials", "true");
+
   return res;
 }
 
+// Handle OPTIONS preflight
 export function handleOptions(req) {
   return withCors(req, NextResponse.json({}, { status: 200 }));
 }
+
