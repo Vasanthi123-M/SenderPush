@@ -27,20 +27,20 @@
 //   return withCors(req, NextResponse.json({}, { status: 200 }));
 // }
 
-
-// lib/cors.js
 import { NextResponse } from "next/server";
 
-// Allowed origins (set in Vercel environment variables)
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+// Allowed origins from environment (comma-separated, no trailing slash!)
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.replace(/\/$/, ""))
+  : [];
 
 export function withCors(req, res) {
-  const origin = req.headers.get("origin");
-  
+  const origin = req.headers.get("origin")?.replace(/\/$/, "");
+
   if (origin && allowedOrigins.includes(origin)) {
     res.headers.set("Access-Control-Allow-Origin", origin);
   } else {
-    // fallback: can also allow all (*) but credentials won't work
+    // fallback
     res.headers.set("Access-Control-Allow-Origin", allowedOrigins[0] || "*");
   }
 
@@ -61,4 +61,3 @@ export function withCors(req, res) {
 export function handleOptions(req) {
   return withCors(req, NextResponse.json({}, { status: 200 }));
 }
-
