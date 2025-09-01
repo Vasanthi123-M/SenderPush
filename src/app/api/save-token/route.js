@@ -70,7 +70,7 @@ export async function POST(req) {
       { name, email, token },
       { upsert: true, new: true }
     );
-
+console.log("user",user);
     return withCors(req, NextResponse.json({ success: true, user }));
   } catch (err) {
     return withCors(req, NextResponse.json({ success: false, error: err.message }, { status: 500 }));

@@ -69,6 +69,7 @@ export async function GET(req) {
       .select({ name: 1, email: 1, token: 1 })
       .sort({ updatedAt: -1 })
       .lean();
+console.log("Tokens in DB:", users.map(u => u.token));
 
     return withCors(req, NextResponse.json({ success: true, users }));
   } catch (err) {
